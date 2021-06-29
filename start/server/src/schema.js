@@ -34,6 +34,14 @@ const typeDefs = gql`
     LARGE
   }
 
+  # Query input types
+
+  type LaunchConnection {
+    cursor: String!
+    hasMore: Boolean!
+    launches: [Launch]!
+  }
+
   # Mutation return types
 
   type TripUpdateResponse {
@@ -45,7 +53,16 @@ const typeDefs = gql`
   # Queries and Mutations
 
   type Query {
-    launches: [Launch]!
+    launches(
+      """
+      The number of results to show. Must be >= 1. Default 20.
+      """
+      pageSize: Int
+      """
+      If you add a cursor here, it will only return results _after_ this cursor
+      """
+      after: String
+    ): LaunchConnection!
     launch(id: ID!): Launch
     me: User
   }
